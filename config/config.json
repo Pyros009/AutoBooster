@@ -1,0 +1,31 @@
+{
+    "debug": false,
+    "user_id": "bad11785-56c1-40ec-9c50-a9e982cedab2",
+    "adb": {
+        "host": "127.0.0.1",
+        "port": 5037
+    },
+    "matching": {
+        "deteccao": 0.8,
+        "click": 0.75
+    },
+    "timers": {
+        "espera_botao": {
+            "min": 4,
+            "max": 10
+        },
+        "espera": {
+            "min": 10,
+            "max": 25
+        },
+        "anuncio": {
+            "min": 50,
+            "max": 70
+        },
+        "cooldown": {
+            "min": 600,
+            "max": 800
+        }
+    },
+    "tolerancia": 3
+}

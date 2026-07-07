@@ -1,3 +1,7 @@
+# Private tokens & information
+config/*private*.json
+.env
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
