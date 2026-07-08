@@ -2,6 +2,8 @@
 config/*private*.json
 .env
 targets/
+config/state.json
+config/config.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
