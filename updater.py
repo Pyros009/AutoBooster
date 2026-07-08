@@ -1,8 +1,10 @@
 import requests
 import json
-from config_manager import state, private
+from config_manager import state, private, save_state
 from logger import logger
 from pathlib import Path
+from zipfile import ZipFile, BadZipFile
+
 
 def version_tuple(v):
     return tuple(map(str, v.split(".")))
@@ -51,35 +53,93 @@ def update_manager():
     #    logger.info(f"Versao dos targets actualizado! Estamos na versao {state["targets_version"]}")
 
 def targets_update(targets):
-    from zipfile import ZipFile
     
     TEMP_DIR = Path("temp")
     TEMP_DIR.mkdir(exist_ok=True)
     
     zip_path = TEMP_DIR / "targets.zip"
     
-    print(targets)
     zip_url = targets["url"]
-    print(zip_url)
     
-    """
     c_version = targets["version"]
     
     o_version = state["targets_version"]
 
     response = requests.get(zip_url)
-    
+
     if response.status_code != 200:
         logger.error("Falha ao descarregar os targets.")
         return False
     
-    with zip_path.open("wb") as f:
-        f.write(response.content)
-    
-    with ZipFile(zip_path, "r") as zip_ref:
-        zip_ref.extractall(".")
+    try: 
+        with zip_path.open("wb") as f:
+            f.write(response.content)
         
-    zip_path.unlink()
-"""
-if __name__ == "__main__":
-    update_manager()
+        with ZipFile(zip_path, "r") as zip_ref:
+            zip_ref.extractall(".")
+
+        logger.info("Novos targets descarregados")
+        
+    except BadZipFile:
+        logger.error("O ficheiro descarregado não é um ZIP válido.")
+        return False
+    
+    finally:
+        if zip_path.exists():
+            zip_path.unlink()    
+            
+        if TEMP_DIR.exists():
+            TEMP_DIR.rmdir()
+        
+    state["targets_version"]=c_version
+    save_state()
+    
+    logger.info(f"Targets atualizados: {o_version} -> {c_version}")
+
+    return True
+
+def program_update(program):
+    
+    TEMP_DIR = Path("temp")
+    TEMP_DIR.mkdir(exist_ok=True)
+    
+    zip_path = TEMP_DIR / "program.zip"
+    
+    zip_url = program["url"]
+    
+    c_version = program["version"]
+    
+    o_version = state["program_version"]
+
+    response = requests.get(zip_url)
+
+    if response.status_code != 200:
+        logger.error("Falha ao descarregar o programa.")
+        return False
+    
+    try: 
+        with zip_path.open("wb") as f:
+            f.write(response.content)
+        
+        with ZipFile(zip_path, "r") as zip_ref:
+            zip_ref.extractall(".")
+
+        logger.info("Versao nova do programa descarregada.")
+        
+    except BadZipFile:
+        logger.error("O ficheiro descarregado não é um ZIP válido.")
+        return False
+    
+    finally:
+        if zip_path.exists():
+            zip_path.unlink()    
+            
+        if TEMP_DIR.exists():
+            TEMP_DIR.rmdir()
+        
+    state["program_version"]=c_version
+    save_state()
+    
+    logger.info(f"Programa atualizado: {o_version} -> {c_version}")
+
+    return True

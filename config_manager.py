@@ -30,3 +30,7 @@ def ensure_user_id():
     if not config["user_id"]:
         config["user_id"] = str(uuid.uuid4())
         save_config()
+        
+def save_state():
+    with STATE_PATH.open("w", encoding="utf-8") as f:
+        json.dump(state, f, indent=4)
