@@ -6,6 +6,13 @@ from logger import logger
 def version_tuple(v):
     return tuple(map(str, v.split(".")))
 
+def validating_manager():
+    import time
+    url = private["github_version"] + f"?t={time.time_ns()}"
+    response = requests.get(url)#private["github_version"])
+    
+    print(response.json()["program"]["version"])
+    
 def update_manager():
     updates = dict()
     
@@ -13,8 +20,8 @@ def update_manager():
     url = private["github_version"] + f"?t={time.time_ns()}"
     response = requests.get(url)#private["github_version"])
     
-    repo_p_version = response.json()["program_version"]
-    repo_t_version = response.json()["targets_version"]
+    repo_p_version = response.json()["program"]["version"]
+    repo_t_version = response.json()["targets"]["version"]
     
     logger.info("A validar a versao dos componentes.")
     
