@@ -6,22 +6,28 @@ from logger import logger
 def version_tuple(v):
     return tuple(map(str, v.split(".")))
 
-def check_updates():
-    updates = dict()    
-    response = requests.get(private["github_version"])
+def update_manager():
+    updates = dict()
+    
+    import time
+    url = private["github_version"] + f"?t={time.time_ns()}"
+    response = requests.get(url)#private["github_version"])
+    
     repo_p_version = response.json()["program_version"]
     repo_t_version = response.json()["targets_version"]
     
+    logger.info("A validar a versao dos componentes.")
+    
     if version_tuple(repo_p_version) > version_tuple(state["program_version"]):
-        logger.info("Versao do programa desactualizado! A actualizar programa...")
         updates["program"]=repo_p_version
     
-    logger.info((repo_t_version))
-    logger.info((state["targets_version"]))
-    
     if version_tuple(repo_t_version) > version_tuple(state["targets_version"]):
-        logger.info("Targets desactualizado! A actualizar targets...")
         updates["targets"]=repo_t_version
+    
+    if updates:
+        logger.info(f"A actualizar os seguintes componentes: {', '.join(updates)}.")
+    else: 
+        logger.info("Os componentes estao todos actualizados.")
         
     if "program" in updates:
         #program_update()
@@ -38,4 +44,4 @@ def check_updates():
 
 
 if __name__ == "__main__":
-    check_updates()
+    update_manager()
