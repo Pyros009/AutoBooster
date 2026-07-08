@@ -7,9 +7,9 @@ if __name__ == "__main__":
     ensure_user_id()
     try:
     #    check_updates()
-        logger.info("a rodar bot")
+        logger.info("A iniciar o autobooster")
         rodar_bot()
     except KeyboardInterrupt:
-        logger.error("\n[-] Script parado pelo utilizador.")
+        logger.error("\n Script parado pelo utilizador.")
 
 

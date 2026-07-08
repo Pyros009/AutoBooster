@@ -68,28 +68,21 @@ def procurar_e_clicar_qualquer(device, imagem_ecra, pasta_templates="targets", p
         rand_x = random.randint(x_min, x_max)
         rand_y = random.randint(y_min, y_max)
         
-        logger.info(f"[+] Melhor padrão detetado: '{ficheiro}' ({maior_precisao*100:.1f}%).")
+        logger.debug(f"Melhor padrão detetado: '{ficheiro}' ({maior_precisao*100:.1f}%).")
         device.shell(f"input tap {rand_x} {rand_y}")
         return True
         
     return False
 
 def enviar_screenshot_erro(imagem_ecra):
-    logger.critical(f"[!!!] Bot Travado. A enviar ecrã de falha para o discord.")
+    logger.critical(f"Bot Travado. A enviar ecrã de falha para o discord.")
     sucesso, buffer = cv2.imencode(".png", imagem_ecra)
     if not sucesso:
         logger.error("Falha ao codificar imagem do erro!")
         send_message("User falhou codificacao da imagem de erro!")
         return False
-    
-    files = {
-                "file": (
-                    "screenshot.png",
-                    buffer.tobytes(),
-                    "image/png"
-                )
-            }
-    if send_image("🚨 Erro no anuncio!", files, mention=False):
+
+    if send_image("🚨 Erro no anuncio!", buffer.tobytes(), mention=False):
         logger.info("Imagem enviada para o discord")
     else:
         send_message("O user nao conseguiu enviar imagem do erro!")

@@ -1,9 +1,11 @@
 {
-    "debug": false,
+    "debug": true,
     "user_id": "bad11785-56c1-40ec-9c50-a9e982cedab2",
     "adb": {
         "host": "127.0.0.1",
-        "port": 5037
+        "port": 5037,
+        "device": "127.0.0.1:5555",
+        "location": "C:\\Program Files\\BlueStacks_nxt\\HD-Adb.exe"
     },
     "matching": {
         "deteccao": 0.8,

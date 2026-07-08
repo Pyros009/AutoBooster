@@ -45,12 +45,12 @@ def send_message(message, mention=False):
 def send_image(message, image, mention=False):
 
     payload = {
-                "content":_build_header() + message
+                "content": f"{_build_header()}\n {message}   \n\n   Screenshot:"
     }
     
     if mention:
         owner_id = private["owner_discord_id"]
-        payload ["content"] = f"<@{owner_id}>\n{_build_header()}\n{message}"
+        payload ["content"] = f"<@{owner_id}>\n{_build_header()}\n\n{message}\n\nScreenshot:"
         payload["allowed_mentions"] =   {
                                             "users": [owner_id]
                                         }
@@ -62,13 +62,17 @@ def send_image(message, image, mention=False):
                                     "payload_json": json.dumps(payload)
                                 },
                                 files={
-                                    "file": image
+                                        "file": (
+                                                    "screenshot.png",
+                                                    image,
+                                                    "image/png"
+                                                )
                                 },
                                 timeout=10
                             )
             
-    
-        if response.status_code == 204:
+
+        if response.ok:
             logger.info("Webhook enviado com sucesso.")
             return True
         else:

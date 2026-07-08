@@ -7,4 +7,7 @@ logging.basicConfig(
     datefmt="%H:%M:%S"
 )
 
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+logging.getLogger("requests").setLevel(logging.WARNING)
+
 logger = logging.getLogger("AutoBooster")

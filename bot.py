@@ -1,4 +1,4 @@
-from adb_manager import connect
+from adb_manager import find_adb, connect_emulator, connect
 from vision import capturar_ecra_bg, procurar_template, procurar_e_clicar_qualquer, enviar_screenshot_erro
 import time
 from config_manager import config, random_timer
@@ -6,11 +6,24 @@ from logger import logger
 import sys
 
 def rodar_bot():
-    device = connect()
-    if not device:
-        logger.error("Nenhum foi encontrado nenhuma ligacao ADB!")   
+    
+    path = find_adb()
+    
+    if path is None:
+        logger.critical("A inicializacao foi interrompida!")
+        sys.exit(1)    
+        
+    if not connect_emulator(path):
+        logger.critical("A inicializacao foi interrompida!")
         sys.exit(1)
-    logger.info("[*] Bot inicializado com a sua lógica de fluxograma personalizada.")
+    
+    device = connect()
+    
+    if device is None:
+        logger.critical("A inicializacao foi interrompida!")
+        sys.exit(1)
+        
+    logger.info("Bot inicializado!.")
 
     
     detect = config["matching"]["deteccao"]
@@ -32,7 +45,7 @@ def rodar_bot():
             runtime_full = procurar_template(ecra, "targets/runtime_full.png", precisao=detect)
             
             if runtime_full:
-                logger.info("[*] Runtime full. Bot parado!")
+                logger.info("Runtime full. Bot parado!")
                 time.sleep(3)
                 break
             
@@ -47,32 +60,32 @@ def rodar_bot():
                 logger.info("[Step 3] A tentar clicar no Boost...")
                 if procurar_e_clicar_qualquer(device, ecra, pasta_templates="targets", precisao=click):
                     tempo_anuncio = random_timer("anuncio")
-                    logger.info(f"[+] Boost clicado! A aguardar {tempo_anuncio}s para o anúncio correr...")
+                    logger.info(f"Boost clicado! A aguardar {tempo_anuncio}s para o anúncio correr...")
                     time.sleep(tempo_anuncio)
                     failed_matches = 0 
                 else:
-                    logger.warning("[-] Falha ao clicar no botão Boost (Padrão não encontrado no Lobby).")
+                    logger.warning("Falha ao clicar no botão Boost (Padrão não encontrado no Lobby).")
                     time.sleep(5)
                 continue
 
         else:
-            logger.info(f"[Step 4] Anúncio Ativo detetado. (Tentativas sem padrão: {failed_matches}/{config['tolerancia']})")
+            logger.info(f"[Step 4] Anúncio Ativo detetado.")
             
             if failed_matches < config["tolerancia"]:
                 if procurar_e_clicar_qualquer(device, ecra, pasta_templates="targets", precisao=click):
                     tempo_transicao = random_timer("espera")
-                    logger.info(f"[+] Padrão de fecho acionado! Aguarda {tempo_transicao}s pela próxima fase/ecrã...")
+                    logger.info(f"Padrão de fecho acionado! Aguarda {tempo_transicao}s pela próxima fase/ecrã...")
                     time.sleep(tempo_transicao)
                     failed_matches = 0 
                     continue 
                 else:
                     tempo_espera_extra = random_timer("espera_botao")
                     failed_matches += 1
-                    logger.warning(f"[-] Nenhum padrão visível. Aguarda {tempo_espera_extra}s para o botão aparecer...")
+                    logger.warning(f"Nenhum padrão visível (Tentativa {failed_matches}/{config['tolerancia']}). Aguarda {tempo_espera_extra}s para o botão aparecer...")
                     time.sleep(tempo_espera_extra)
                     continue
             else:
-                logger.error("[Step 4] CRÍTICO: Anúncio bloqueado ou padrão novo detetado!")
+                logger.error("Anúncio bloqueado ou padrão novo detetado!")
                 enviar_screenshot_erro(ecra)
                 time.sleep(5)
                 
