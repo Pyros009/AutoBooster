@@ -5,12 +5,14 @@ import uuid
 import shutil
 from logger import logger
 
-BASE_PATH = Path(__file__).parent / "config"
-CONFIG_PATH = BASE_PATH / "config.json"
+BASE_PATH = Path(__file__).resolve().parent / "config"
+USER_CONFIG_DIR = BASE_PATH / "config"
+USER_CONFIG_DIR.mkdir(exist_ok=True)
+CONFIG_PATH = USER_CONFIG_DIR / "config.json"
 CONFIG_DEFAULT_PATH = BASE_PATH / "config_default.json"
-PRIVATE_PATH = BASE_PATH / "private.json"
+PRIVATE_PATH = USER_CONFIG_DIR / "private.json"
 PRIVATE_DEFAULT_PATH = BASE_PATH / "private_default.json"
-STATE_PATH = BASE_PATH / "state.json"
+STATE_PATH = USER_CONFIG_DIR / "state.json"
 STATE_DEFAULT_PATH = BASE_PATH / "state_default.json"
 
 config = None
