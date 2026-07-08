@@ -4,7 +4,7 @@
                 "url":""
                 },
     "targets": {
-                "version":"0.9.4",
-                "url":"https://raw.githubusercontent.com/Pyros009/AutoBooster/main/update_test/targets.zip"
+                "version":"0.9.5",
+                "url":"https://raw.githubusercontent.com/Pyros009/AutoBooster/main/targets.zip"
                 }
 }
