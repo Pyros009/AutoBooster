@@ -53,19 +53,6 @@ def ensure_private():
     shutil.copy(PRIVATE_DEFAULT_PATH, PRIVATE_PATH)
     return       
 
-ensure_config()
-ensure_state()
-ensure_private()
-
-with CONFIG_PATH.open(encoding="utf-8") as f:
-    config = json.load(f)
-    
-with PRIVATE_PATH.open(encoding="utf-8") as g:
-    private = json.load(g)
-
-with STATE_PATH.open(encoding="utf-8") as h:
-    state = json.load(h)
-    
 def random_timer(name):
     timer = config["timers"][name]
     return random.randint(timer["min"],timer["max"])
@@ -82,3 +69,17 @@ def ensure_user_id():
     if not config["user_id"]:
         config["user_id"] = str(uuid.uuid4())
         save_config()
+        
+def init_configs():
+    ensure_config()
+    ensure_state()
+    ensure_private()
+
+    with CONFIG_PATH.open(encoding="utf-8") as f:
+        config = json.load(f)
+        
+    with PRIVATE_PATH.open(encoding="utf-8") as g:
+        private = json.load(g)
+
+    with STATE_PATH.open(encoding="utf-8") as h:
+        state = json.load(h)

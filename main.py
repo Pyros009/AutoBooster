@@ -1,9 +1,11 @@
 from bot import rodar_bot
 from logger import logger
-from config_manager import ensure_user_id
+from config_manager import ensure_user_id, init_configs
 from updater import update_manager
 
 if __name__ == "__main__":
+    
+    init_configs()
     
     ensure_user_id()
     
