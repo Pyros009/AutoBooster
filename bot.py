@@ -1,7 +1,7 @@
 from adb_manager import find_adb, connect_emulator, connect
 from vision import capturar_ecra_bg, procurar_template, procurar_e_clicar_qualquer, enviar_screenshot_erro
 import time
-from config_manager import config, random_timer
+from config_manager import config, random_timer, private
 from logger import logger
 import sys
 
@@ -86,7 +86,8 @@ def rodar_bot():
                     continue
             else:
                 logger.error("Anúncio bloqueado ou padrão novo detetado!")
-                enviar_screenshot_erro(ecra)
+                if private.get("discord_integration", False):
+                    enviar_screenshot_erro(ecra)
                 time.sleep(5)
                 
                 break
