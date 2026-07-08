@@ -4,16 +4,25 @@ from pathlib import Path
 import uuid
 import shutil
 from logger import logger
+import sys
 
-BASE_PATH = Path(__file__).resolve().parent / "config"
-USER_CONFIG_DIR = BASE_PATH / "config"
-USER_CONFIG_DIR.mkdir(exist_ok=True)
+if getattr(sys, "frozen", False):
+    APP_DIR = Path(sys.executable).parent
+    RESOURCE_DIR = Path(__file__).resolve().parent / "config"
+else:
+    APP_DIR = Path(__file__).resolve().parent
+    RESOURCE_DIR = APP_DIR / "config"
+
+USER_CONFIG_DIR = APP_DIR / "config"
+USER_CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+
+CONFIG_DEFAULT_PATH = RESOURCE_DIR / "config_default.json"
+STATE_DEFAULT_PATH = RESOURCE_DIR / "state_default.json"
+PRIVATE_DEFAULT_PATH = RESOURCE_DIR / "private_default.json"
+
 CONFIG_PATH = USER_CONFIG_DIR / "config.json"
-CONFIG_DEFAULT_PATH = BASE_PATH / "config_default.json"
-PRIVATE_PATH = USER_CONFIG_DIR / "private.json"
-PRIVATE_DEFAULT_PATH = BASE_PATH / "private_default.json"
 STATE_PATH = USER_CONFIG_DIR / "state.json"
-STATE_DEFAULT_PATH = BASE_PATH / "state_default.json"
+PRIVATE_PATH = USER_CONFIG_DIR / "private.json"
 
 config = None
 private = None
