@@ -1,6 +1,7 @@
 # Private tokens & information
 config/*private*.json
 .env
+targets/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
