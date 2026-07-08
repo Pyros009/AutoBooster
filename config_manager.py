@@ -13,6 +13,10 @@ PRIVATE_DEFAULT_PATH = BASE_PATH / "private_default.json"
 STATE_PATH = BASE_PATH / "state.json"
 STATE_DEFAULT_PATH = BASE_PATH / "state_default.json"
 
+config = None
+private = None
+state = None
+
 def ensure_config():
     if not CONFIG_DEFAULT_PATH.exists():
         raise FileNotFoundError(
@@ -70,16 +74,16 @@ def ensure_user_id():
         config["user_id"] = str(uuid.uuid4())
         save_config()
         
-def init_configs():
-    ensure_config()
-    ensure_state()
-    ensure_private()
+    
+ensure_config()
+ensure_state()
+ensure_private()
 
-    with CONFIG_PATH.open(encoding="utf-8") as f:
-        config = json.load(f)
-        
-    with PRIVATE_PATH.open(encoding="utf-8") as g:
-        private = json.load(g)
+with CONFIG_PATH.open(encoding="utf-8") as f:
+    config = json.load(f)
+    
+with PRIVATE_PATH.open(encoding="utf-8") as g:
+    private = json.load(g)
 
-    with STATE_PATH.open(encoding="utf-8") as h:
-        state = json.load(h)
+with STATE_PATH.open(encoding="utf-8") as h:
+    state = json.load(h)
