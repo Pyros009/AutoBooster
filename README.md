@@ -16,3 +16,13 @@ Requirements (v0.9.x):
 - 160 DPI
 
     Note: Other resolutions or DPI settings are not officially supported in v0.9.x and may lead to incorrect template detection or inaccurate clicks.
+
+## Features
+
+Automatic ADB detection
+Automatic updates*
+Computer vision-based target detection
+Automatic stop after the boost cycle is completed
+Portable executable
+
+* Current status: Target updates are fully automatic. Application self-updates are still under development and will be completed before the full release.

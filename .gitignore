@@ -5,6 +5,8 @@ config/state.json
 config/config.json
 config/private.json
 debug*.png
+logs/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
