@@ -7,12 +7,36 @@ import subprocess
 def connect():
     client = Client(host=config["adb"]["host"], port=config["adb"]["port"])
     logger.info(f"a ligar a {config["adb"]["host"]}:{config["adb"]["port"]}")
+    target_serial = config["adb"]["device"]
     devices = client.devices()
+    for device in devices:
+        if device.serial == target_serial:
+            logger.info(f"Device encontrado: {device.serial}")
+            logger.info(f"Android size: {adb_shell(device.serial, 'wm size')}")
+            logger.info(f"Android density: {adb_shell(device.serial, 'wm density')}")
+            return device
     if not devices:
         logger.critical("Nao foram detectados devices")
         return None
-    logger.info(f"Dispositivo detectado: {devices[0].serial}")
-    return devices[0]
+    logger.info(f"Dispositivo nao localizado.")
+    return None
+
+def adb_shell(device_serial, command):
+    result = subprocess.run(
+                                [
+                                    config["adb"]["location"],
+                                    "-s",
+                                    device_serial,
+                                    "shell",
+                                    *command.split()
+                                ],
+                                capture_output=True,
+                                text=True
+                            )
+    
+    if result.returncode != 0:
+        logger.error(result.stderr.strip())
+    return result.stdout.strip()
 
 def find_adb():
     location = config["adb"]["location"]

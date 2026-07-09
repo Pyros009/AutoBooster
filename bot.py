@@ -31,11 +31,19 @@ def rodar_bot():
     failed_matches = 0
 
     while True:
-        ecra = capturar_ecra_bg(device, salvar_imagem=False)
+        try:
+            ecra = capturar_ecra_bg(device)
+        except RuntimeError:
+            logger.warning("Ligação ADB perdida. A tentar reconectar...")
+            time.sleep(5)
+            device = connect()
+            continue
+        
         if ecra is None:
             time.sleep(2)
             continue
-
+        
+        logger.info(f"Screenshot shape: {ecra.shape}")
         no_lobby = procurar_template(ecra, "targets/lobby.png", precisao=detect)
 
         if no_lobby:

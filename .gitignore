@@ -4,7 +4,7 @@ targets/
 config/state.json
 config/config.json
 config/private.json
-
+debug*.png
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
