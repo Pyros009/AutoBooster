@@ -46,4 +46,4 @@ def configure_logger(debug):
     if debug:
         logger.setLevel(logging.DEBUG)
     else:
-        logger.setLevel(logging.INFO)
+        logger.setLevel(logging.WARNING)

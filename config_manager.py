@@ -3,7 +3,7 @@ import random
 from pathlib import Path
 import uuid
 import shutil
-from logger import logger
+from logger import logger, configure_logger
 import sys
 
 if getattr(sys, "frozen", False):
@@ -98,3 +98,5 @@ with PRIVATE_PATH.open(encoding="utf-8") as g:
 
 with STATE_PATH.open(encoding="utf-8") as h:
     state = json.load(h)
+
+configure_logger(config["debug"])
