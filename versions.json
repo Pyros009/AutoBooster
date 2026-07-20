@@ -1,7 +1,7 @@
 {
     "program": {
                 "version": "0.9.1",
-                "url":""
+                "url":"testurl"
                 },
     "targets": {
                 "version":"0.9.5",
