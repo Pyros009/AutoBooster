@@ -4,10 +4,12 @@ from config_manager import state, private, save_state
 from logger import logger
 from pathlib import Path
 from zipfile import ZipFile, BadZipFile
-
+import os
+import subprocess
+import sys
 
 def version_tuple(v):
-    return tuple(map(str, v.split(".")))
+    return tuple(map(int, v.split(".")))
 
 def validating_manager():
     import time
@@ -15,6 +17,45 @@ def validating_manager():
     response = requests.get(url)#private["github_version"])
     
     print(response.json()["program"]["version"])
+
+def prog_updater(program_url, version):
+    
+    if getattr(sys, "frozen", False):
+        APP_DIR = Path(sys.executable).parent
+    else:
+        APP_DIR = Path(__file__).resolve().parent
+        
+    TEMP_DIR = APP_DIR / ".updater"
+    TEMP_DIR.mkdir(exist_ok=True)
+
+    updater_path = TEMP_DIR / "program_updater.exe"
+    
+    try:
+        response = requests.get(program_url, timeout = 60)
+        
+        response.raise_for_status()
+    
+        # escreve o zip file
+        with updater_path.open("wb") as f:
+            f.write(response.content)
+                      
+        logger.info("Updater descarregado...")
+        
+        subprocess.Popen([
+                            str(updater_path),
+                            "--pid",
+                            str(os.getpid()),
+                            "--app",
+                            str(APP_DIR / "AutoBooster.exe"),
+                            "--version",
+                            version
+                        ])
+
+        sys.exit(0)
+
+    except requests.RequestException as e:
+        logger.error(f"Falha no download: {e}")
+        return False   
     
 def update_manager():
     updates = dict()
@@ -42,8 +83,9 @@ def update_manager():
         logger.info("Os componentes estao todos actualizados.")
         
     if "program" in updates:
-        #program_update()
+        #prog_updater(repo_p["updater_url"], repo_p["version"])
         ...
+        
     
     if "targets" in updates:
         targets_update(repo_t)
@@ -95,51 +137,5 @@ def targets_update(targets):
     save_state()
     
     logger.info(f"Targets atualizados: {o_version} -> {c_version}")
-
-    return True
-
-def program_update(program):
-    
-    TEMP_DIR = Path("temp")
-    TEMP_DIR.mkdir(exist_ok=True)
-    
-    zip_path = TEMP_DIR / "program.zip"
-    
-    zip_url = program["url"]
-    
-    c_version = program["version"]
-    
-    o_version = state["program_version"]
-
-    response = requests.get(zip_url)
-
-    if response.status_code != 200:
-        logger.error("Falha ao descarregar o programa.")
-        return False
-    
-    try: 
-        with zip_path.open("wb") as f:
-            f.write(response.content)
-        
-        with ZipFile(zip_path, "r") as zip_ref:
-            zip_ref.extractall(".")
-
-        logger.info("Versao nova do programa descarregada.")
-        
-    except BadZipFile:
-        logger.error("O ficheiro descarregado não é um ZIP válido.")
-        return False
-    
-    finally:
-        if zip_path.exists():
-            zip_path.unlink()    
-            
-        if TEMP_DIR.exists():
-            TEMP_DIR.rmdir()
-        
-    state["program_version"]=c_version
-    save_state()
-    
-    logger.info(f"Programa atualizado: {o_version} -> {c_version}")
 
     return True

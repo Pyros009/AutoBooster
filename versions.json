@@ -1,11 +1,11 @@
 {
     "program": {
                 "version": "0.9.1",
-                "url":""
+                "updater_url":"https://raw.githubusercontent.com/Pyros009/AutoBooster/main/downloadables/Autobooster_updater.exe"
                 },
     "targets": {
                 "version":"0.9.5",
-                "url":"https://raw.githubusercontent.com/Pyros009/AutoBooster/main/targets.zip",
+                "url":"https://raw.githubusercontent.com/Pyros009/AutoBooster/main/downloadables/targets.zip",
                 "ref_size":"540x960"
                 }
 }

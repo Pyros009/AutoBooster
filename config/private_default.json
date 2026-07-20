@@ -1,4 +1,5 @@
 {       
         "discord_integration": false,
-        "github_version":"https://raw.githubusercontent.com/Pyros009/AutoBooster/refs/heads/main/versions.json"
+        "github_version":"https://raw.githubusercontent.com/Pyros009/AutoBooster/refs/heads/main/versions.json",
+        "github_releases":"https://github.com/Pyros009/AutoBooster/releases/download/"
 }
