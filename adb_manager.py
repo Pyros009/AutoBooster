@@ -1,5 +1,5 @@
 from ppadb.client import Client
-from config_manager import config, save_config
+from config_manager import config, save_config, save_state, state
 from logger import logger
 from pathlib import Path
 import subprocess
@@ -12,8 +12,19 @@ def connect():
     for device in devices:
         if device.serial == target_serial:
             logger.info(f"Device encontrado: {device.serial}")
-            logger.info(f"Android size: {adb_shell(device.serial, 'wm size')}")
-            logger.info(f"Android density: {adb_shell(device.serial, 'wm density')}")
+            
+            screen_size = adb_shell(device.serial, 'wm size')
+            logger.info(f"Android size: {screen_size}")
+            
+            screen_resolution = adb_shell(device.serial, 'wm density')
+            logger.info(f"Android density: {screen_resolution}")
+            
+            length, height = screen_size.strip("Physical size: ").split("x")
+            resolution = screen_resolution.strip("Physical density: ")
+
+            state["screen_settings"] = "x".join((length,height, resolution))
+            save_state()
+            
             return device
     if not devices:
         logger.critical("Nao foram detectados devices")

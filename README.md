@@ -26,3 +26,6 @@ Automatic stop after the boost cycle is completed
 Portable executable
 
 * Current status: Target updates are fully automatic. Application self-updates are still under development and will be completed before the full release.
+
+patch version 0.9.1
+- added further troubleshooting support

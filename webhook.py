@@ -8,6 +8,7 @@ def _build_header():
                     f"```Userid: {config["user_id"]}\n" + 
                     f"Program Version: {state["program_version"]}\n" +
                     f"Target Version:{state["targets_version"]}\n" +
+                    f"Graphic settings: {state["screen_settings"]}\n" + 
                     f"Event time: {datetime.now()}```"
                     )
     
