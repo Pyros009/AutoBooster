@@ -55,7 +55,7 @@ def prog_updater(program_url, version):
                             str(os.getpid()),
                             "--app",
                             str(APP_DIR / "AutoBooster.exe"),
-                            "--updater_exec",
+                            "--url",
                             release_url 
                         ])
 
