@@ -8,6 +8,11 @@ from zipfile import ZipFile, BadZipFile
 import shutil
 import subprocess
 
+import psutil
+import os
+
+logger.warning(f"PID: {os.getpid()}")
+
 
 def version_tuple(v):
     return tuple(map(int, v.split(".")))
@@ -28,7 +33,7 @@ def wait_for_process(pid, timeout=30):
 
 def download_install_version(url, app_dir):
     # cria uma temp folder
-    TEMP_DIR = app_dir / "temp"
+    TEMP_DIR = app_dir / "temp" / "program"
     TEMP_DIR.mkdir(exist_ok=True)
 
     # cria o zip file
@@ -132,5 +137,9 @@ subprocess.Popen(
     [str(app_path)],
     cwd=app_dir
 )
+
+logger.info("A terminar o updater...")
+import logging
+logging.shutdown()
 
 sys.exit(0)    

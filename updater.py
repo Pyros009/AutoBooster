@@ -59,7 +59,7 @@ def prog_updater(program_url, version):
                             release_url 
                         ])
 
-        sys.exit(0)
+        return True
 
     except requests.RequestException as e:
         logger.error(f"Falha no download: {e}")
@@ -91,7 +91,12 @@ def update_manager():
         logger.info("Os componentes estao todos actualizados.")
         
     if "program" in updates:
-        prog_updater(repo_p["updater_url"], repo_p["version"])
+        logger.info("A actualizar o programa...")
+        p_state = prog_updater(repo_p["updater_url"], repo_p["version"])
+        logger.info("Saiu do prog_updater")
+        logger.warning(f"prog updater retornou {p_state}")
+        return p_state
+        
         ...
         
     
@@ -104,7 +109,7 @@ def update_manager():
 
 def targets_update(targets):
     
-    TEMP_DIR = Path("temp")
+    TEMP_DIR = Path("temp") / "targets"
     TEMP_DIR.mkdir(exist_ok=True)
     
     zip_path = TEMP_DIR / "targets.zip"
@@ -137,9 +142,6 @@ def targets_update(targets):
     finally:
         if zip_path.exists():
             zip_path.unlink()    
-            
-        if TEMP_DIR.exists():
-            TEMP_DIR.rmdir()
         
     state["targets_version"]=c_version
     save_state()
