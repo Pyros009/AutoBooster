@@ -1,15 +1,9 @@
 from logger import logger
-import json
 import requests
-import time
-from config_manager import save_state, state, private ## private para debug only
 import argparse
 import sys
-import time
-import os
 import psutil
 from pathlib import Path
-from zipfile import ZipFile, BadZipFile
 
 def version_tuple(v):
     return tuple(map(int, v.split(".")))
@@ -55,10 +49,6 @@ def download_install_version(url):
         # install
         ...        
 
-    except BadZipFile:
-        logger.error("O ficheiro descarregado não é um ZIP válido.")
-        return False
-
     except requests.RequestException as e:
         logger.error(f"Falha no download: {e}")
         return False
@@ -79,7 +69,7 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("--pid", type=int, required=True)
 parser.add_argument("--app", required=True)
-parser.add_argument("--version", required=True)
+parser.add_argument("--updater_exec", required=True)
 
 args = parser.parse_args()
 
@@ -89,40 +79,9 @@ parent_pid = args.pid
 if not wait_for_process(args.pid):
     sys.exit(1)
 
-
-# 2. Consultar versão/download -- a versao e o url vem do codigo, isto é debug only
-new_version = args.version
-
-current_version = state["program_version"]
-
-logger.info(f"Versao actual: {current_version}.\nVersão encontrada: {new_version}.")
-
-if version_tuple(new_version) > version_tuple(current_version):
-    logger.info(f"Nova versão encontrada, a actualizar...")
-else:
-    logger.info(f"Versao actual é a mais recente...")
-    sys.exit(1)
-
-# 3. Preparar a extraccao e download do ZIP + instalar
-
-# releases url
-release_url = (
-    private["github_releases"]
-    + f"v{new_version}/AutoBooster.zip"
-)
-
+release_url = args.updater_exec
 download_install_version(release_url)
 
 # 4. Reiniciar o AutoBooster
 
 app_path = args.app
-
-def program_update(url, o_version, n_version):
-    
-    state["program_version"]=n_version
-    save_state()
-    
-    logger.info(f"Programa atualizado: {o_version} -> {n_version}")
-
-    return True
-

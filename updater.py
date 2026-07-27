@@ -40,15 +40,23 @@ def prog_updater(program_url, version):
             f.write(response.content)
                       
         logger.info("Updater descarregado...")
-        
+               
+        # Definir o link do download
+
+        # releases url
+        release_url = (
+            private["github_releases"]
+            + f"v{version}/AutoBooster.zip"
+        )
+                
         subprocess.Popen([
                             str(updater_path),
                             "--pid",
                             str(os.getpid()),
                             "--app",
                             str(APP_DIR / "AutoBooster.exe"),
-                            "--version",
-                            version
+                            "--updater_exec",
+                            release_url 
                         ])
 
         sys.exit(0)
