@@ -6,6 +6,7 @@ import psutil
 from pathlib import Path
 from zipfile import ZipFile, BadZipFile
 import shutil
+import subprocess
 
 
 def version_tuple(v):
@@ -94,14 +95,12 @@ def download_install_version(url, app_dir):
         logger.error(f"Falha durante a instalação: {e}")
         return False
     
-    #finally:
-    #    # limpa as pastas temporarias
-    #    if zip_path.exists():
-    #        zip_path.unlink()    
-    #        
-    #    if TEMP_DIR.exists():
-    #        TEMP_DIR.rmdir()
-
+    finally:
+        # limpa os temporarios           
+        if TEMP_DIR.exists():
+            shutil.rmtree(TEMP_DIR)
+            logger.info("Ficheiros temporários removidos.")
+    
 ######################
 
 parser = argparse.ArgumentParser()
@@ -116,11 +115,22 @@ app_path = Path(args.app)
 app_dir = app_path.parent
 
 # 1. Esperar que o AutoBooster termine
-parent_pid = args.pid
 if not wait_for_process(args.pid):
     sys.exit(1)
 
 if not download_install_version(args.url, app_dir):
+    logger.error("A atualização falhou. A iniciar a versão atual.")
+    subprocess.Popen(
+                    [str(app_path)],
+                    cwd=app_dir
+                )
     sys.exit(1)
     
-    
+logger.info("Atualização concluída. A iniciar a nova versão.")
+
+subprocess.Popen(
+    [str(app_path)],
+    cwd=app_dir
+)
+
+sys.exit(0)    
