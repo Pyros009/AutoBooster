@@ -6,6 +6,7 @@ config/config.json
 config/private.json
 debug*.png
 logs/
+debug/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
