@@ -86,15 +86,12 @@ args = parser.parse_args()
 
 # 1. Esperar que o AutoBooster termine
 parent_pid = args.pid
-#if not wait_for_process(args.pid):
-#    sys.exit(1)
+if not wait_for_process(args.pid):
+    sys.exit(1)
 
 
 # 2. Consultar versão/download -- a versao e o url vem do codigo, isto é debug only
-# get url - temp usado para correr o program_updater em standalone
-url = private["github_version"] + f"?t={time.time_ns()}"
-response = requests.get(url)#private["github_version"])
-new_version = response.json()["program"]["version"] ## args.version
+new_version = args.version
 
 current_version = state["program_version"]
 

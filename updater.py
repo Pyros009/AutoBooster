@@ -83,7 +83,7 @@ def update_manager():
         logger.info("Os componentes estao todos actualizados.")
         
     if "program" in updates:
-        #prog_updater(repo_p["updater_url"], repo_p["version"])
+        prog_updater(repo_p["updater_url"], repo_p["version"])
         ...
         
     
