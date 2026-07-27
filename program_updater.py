@@ -86,8 +86,8 @@ args = parser.parse_args()
 
 # 1. Esperar que o AutoBooster termine
 parent_pid = args.pid
-if not wait_for_process(args.pid):
-    sys.exit(1)
+#if not wait_for_process(args.pid):
+#    sys.exit(1)
 
 
 # 2. Consultar versão/download -- a versao e o url vem do codigo, isto é debug only
@@ -107,14 +107,12 @@ else:
     sys.exit(1)
 
 # 3. Preparar a extraccao e download do ZIP + instalar
-#app_url = args.url
 
 # releases url
-#release_url = (
-#    private["github_releases"]
-#    + f"v{new_version}/AutoBooster.zip"
-#)
-
+release_url = (
+    private["github_releases"]
+    + f"v{new_version}/AutoBooster.zip"
+)
 
 download_install_version(release_url)
 
@@ -124,15 +122,10 @@ app_path = args.app
 
 def program_update(url, o_version, n_version):
     
-    
-        
-        
-            
-
-               
     state["program_version"]=n_version
     save_state()
     
     logger.info(f"Programa atualizado: {o_version} -> {n_version}")
 
     return True
+

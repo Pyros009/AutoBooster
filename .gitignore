@@ -7,6 +7,9 @@ config/private.json
 debug*.png
 logs/
 debug/
+build.py
+AutoBooster.zip
+version_info.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
