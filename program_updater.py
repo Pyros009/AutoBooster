@@ -47,11 +47,12 @@ def download_install_version(url):
         with zip_path.open("wb") as f:
             f.write(response.content)
             
-        with ZipFile(zip_path, "r") as zip_ref:
-            zip_ref.extractall(".")
+        #with ZipFile(zip_path, "r") as zip_ref:
+        #    zip_ref.extractall(".")
             
         logger.info("Ficheiro descarregado e extraido...")
         
+        # install
         ...        
 
     except BadZipFile:
@@ -62,13 +63,13 @@ def download_install_version(url):
         logger.error(f"Falha no download: {e}")
         return False
     
-    finally:
-        # limpa as pastas temporarias
-        if zip_path.exists():
-            zip_path.unlink()    
-            
-        if TEMP_DIR.exists():
-            TEMP_DIR.rmdir()
+    #finally:
+    #    # limpa as pastas temporarias
+    #    if zip_path.exists():
+    #        zip_path.unlink()    
+    #        
+    #    if TEMP_DIR.exists():
+    #        TEMP_DIR.rmdir()
 
     logger.info("Versao nova do programa descarregada.")
     return True        
@@ -108,11 +109,12 @@ else:
 # 3. Preparar a extraccao e download do ZIP + instalar
 #app_url = args.url
 
-# temp url
-release_url = (
-    private["github_releases"]
-    + f"v{new_version}/AutoBooster.zip"
-)
+# releases url
+#release_url = (
+#    private["github_releases"]
+#    + f"v{new_version}/AutoBooster.zip"
+#)
+
 
 download_install_version(release_url)
 
