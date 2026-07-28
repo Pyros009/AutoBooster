@@ -2,13 +2,13 @@
 A lightweight computer vision-based auto-clicker for boosting a server.
 Uses Bluestacks as interface.
 
-- Status: under active development.
+- Status: under active development, approaching first stable release.
 
 ## Overview
 Autobooster uses computer vision to detect specific UI elements on the screen and automatically
 perform the required clicks at the appropriate time.
 
-Once the boost cycle is fully complete or on demand, the application stops automatically.
+Once the boost cycle is fully complete, or under manual request, the application stops automatically.
 
 Requirements (v0.9.x):
 - Bluestacks with ADB turned on
@@ -19,13 +19,32 @@ Requirements (v0.9.x):
 
 ## Features
 
-Automatic ADB detection
-Automatic updates*
-Computer vision-based target detection
-Automatic stop after the boost cycle is completed
-Portable executable
+- Automatic ADB detection
+- Automatic updates
+- Computer vision-based target detection
+- Automatic stop after the boost cycle is completed
+- Portable executable
 
-* Current status: Target updates are fully automatic. Application self-updates are still under development and will be completed before the full release.
+## Known issues
+ - Unsupported screen resolutions or DPI settings may cause detection errors, loops, or missed clicks.
 
-patch version 0.9.1
-- added further troubleshooting support
+## Roadmap
+- add automatic rollback on failed program update
+- improve installation and configuration documentation
+- prepare the first stable release
+- add more resolution/dpi compatibility options
+
+## Changelog
+
+### 0.9.4
+- Completed automatic application patching
+
+### 0.9.3
+- Added logging system
+- Added automatic program update framework
+
+### 0.9.2
+- Added program updater foundation
+
+### 0.9.1
+- Added additional troubleshooting support

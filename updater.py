@@ -96,7 +96,7 @@ def update_manager():
         logger.info("A actualizar o programa...")
         p_state = prog_updater(repo_p["updater_url"], repo_p["version"])
         logger.info("Saiu do prog_updater")
-        logger.warning(f"prog updater retornou {p_state}")
+        logger.info(f"prog updater retornou {p_state}")
         return p_state
               
               
