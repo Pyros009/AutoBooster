@@ -96,16 +96,13 @@ def update_manager():
         logger.info("Saiu do prog_updater")
         logger.warning(f"prog updater retornou {p_state}")
         return p_state
-        
-        ...
-        
-    
+              
+              
     if "targets" in updates:
         targets_update(repo_t)
-        ...
         
-    #    logger.info(f"Versao do programa actualizado! Estamos na versao {state["program_version"]}")
-    #    logger.info(f"Versao dos targets actualizado! Estamos na versao {state["targets_version"]}")
+    logger.info(f"Versao do programa actualizado! Estamos na versao {state["program_version"]}")
+    logger.info(f"Versao dos targets actualizado! Estamos na versao {state["targets_version"]}")
 
 def targets_update(targets):
     
