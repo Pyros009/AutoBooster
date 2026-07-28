@@ -1,6 +1,6 @@
 {
     "program": {
-                "version": "0.9.2",
+                "version": "0.9.3",
                 "updater_url":"https://raw.githubusercontent.com/Pyros009/AutoBooster/main/downloadables/program_updater.exe"
                 },
     "targets": {
