@@ -43,10 +43,13 @@ def download_install_version(url, app_dir):
     EXTRACT_DIR = TEMP_DIR / "extracted"
     EXTRACT_DIR.mkdir(exist_ok=True)
     
+    logger.warning(f"Link recebido, instalador em {url}")
+    
     try:
         response = requests.get(url)
         response.raise_for_status()
 
+    
         # escreve o zip file
         with zip_path.open("wb") as f:
             f.write(response.content)
