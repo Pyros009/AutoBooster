@@ -9,9 +9,9 @@ import os
 
 if __name__ == "__main__":
     
-    logger.warning(f"PID: {os.getpid()}")    
+    logger.info(f"PID: {os.getpid()}")    
     configure_logger(config["debug"])
-    logger.warning("Current version................")
+    logger.info("Current version................")
     ensure_user_id()
        
     if update_manager():

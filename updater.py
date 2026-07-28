@@ -56,7 +56,9 @@ def prog_updater(program_url, version):
                             "--app",
                             str(APP_DIR / "AutoBooster.exe"),
                             "--url",
-                            release_url 
+                            release_url,
+                            "--version",
+                            version
                         ])
 
         return True

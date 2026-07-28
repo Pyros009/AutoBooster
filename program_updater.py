@@ -7,11 +7,11 @@ from pathlib import Path
 from zipfile import ZipFile, BadZipFile
 import shutil
 import subprocess
-
+import json
 import psutil
 import os
 
-logger.warning(f"PID: {os.getpid()}")
+logger.info(f"PID: {os.getpid()}")
 
 
 def version_tuple(v):
@@ -31,7 +31,7 @@ def wait_for_process(pid, timeout=30):
 
     return True
 
-def download_install_version(url, app_dir):
+def download_install_version(url, app_dir, version):
     # cria uma temp folder
     TEMP_DIR = app_dir / "temp" / "program"
     TEMP_DIR.mkdir(exist_ok=True)
@@ -43,7 +43,7 @@ def download_install_version(url, app_dir):
     EXTRACT_DIR = TEMP_DIR / "extracted"
     EXTRACT_DIR.mkdir(exist_ok=True)
     
-    logger.warning(f"Link recebido, instalador em {url}")
+    logger.info(f"Link recebido, instalador em {url}")
     
     try:
         response = requests.get(url)
@@ -89,6 +89,17 @@ def download_install_version(url, app_dir):
                         )
         
         logger.info("Nova versão instalada.")
+        state_file = app_dir / "config" / "state.json"
+        
+        with state_file.open("r", encoding="utf-8") as f:
+            state = json.load(f)
+
+        state["program_version"] = version
+
+        with state_file.open("w", encoding="utf-8") as f:
+            json.dump(state, f, indent=4)
+        
+        
         return True
     
     except BadZipFile:
@@ -108,6 +119,7 @@ def download_install_version(url, app_dir):
         if TEMP_DIR.exists():
             shutil.rmtree(TEMP_DIR)
             logger.info("Ficheiros temporários removidos.")
+            
     
 ######################
 
@@ -116,6 +128,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--pid", type=int, required=True)
 parser.add_argument("--app", required=True)
 parser.add_argument("--url", required=True)
+parser.add_argument("--version", required=True)
 
 args = parser.parse_args()
 
@@ -126,7 +139,7 @@ app_dir = app_path.parent
 if not wait_for_process(args.pid):
     sys.exit(1)
 
-if not download_install_version(args.url, app_dir):
+if not download_install_version(args.url, app_dir, args.version):
     logger.error("A atualização falhou. A iniciar a versão atual.")
     subprocess.Popen(
                     [str(app_path)],
