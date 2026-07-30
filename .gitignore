@@ -12,6 +12,7 @@ AutoBooster.zip
 version_info.txt
 .updater/
 temp/
+todo.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

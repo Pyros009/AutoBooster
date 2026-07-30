@@ -4,7 +4,7 @@
                 "updater_url":"https://raw.githubusercontent.com/Pyros009/AutoBooster/main/downloadables/program_updater.exe"
                 },
     "targets": {
-                "version":"0.9.5",
+                "version":"0.9.6",
                 "url":"https://raw.githubusercontent.com/Pyros009/AutoBooster/main/downloadables/targets.zip",
                 "ref_size":"540x960"
                 }
